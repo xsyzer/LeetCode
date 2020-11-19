@@ -38,22 +38,18 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int[] nextGreaterElement(int[] nums1, int[] nums2) {
-                int [] num3 = new int[nums1.length];
-                Arrays.fill(num3,-1);
-                HashMap map = new HashMap();
-        for (int i = 0; i < nums2.length; i++) {
-            map.put(nums2[i], i);
+        HashMap<Integer,Integer> map = new HashMap<>();
+        Stack<Integer> stack = new Stack<>();
+        for (int num : nums2) {
+            while (!stack.isEmpty() && num > stack.peek()) {
+                map.put(stack.pop(),num);
+            }
+            stack.push(num);
         }
         for (int i = 0; i < nums1.length; i++) {
-                int tem = (Integer)map.get(nums1[i]);
-                for (int j = tem + 1; j < nums2.length; j++) {
-                    if(nums2[j] > nums1[i]){
-                        num3[i] = nums2[j];
-                        break;
-                    }
-                }
+            nums1[i] = map.getOrDefault(nums1[i], -1);
         }
-        return num3;
+        return nums1;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
